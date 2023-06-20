@@ -355,47 +355,47 @@ function checkValue(value, alert, minValue, maxValue) {
 }
 
 
-// getElement("#tknv").onblur = function () {
-//   if (checkEmty("#tknv", "#tbTKNV")) {
-// 	  if (checkNumber("#tknv", "#tbTKNV")) {
-// 		  checkLength("#tknv".trim(), "#tbTKNV", 4, 6);
-//     }
-//   }
-// };
-// getElement("#name").onblur = function () {
-//   if (checkEmty("#name".trim(), "#tbTen")) {
+getElement("#tknv").onblur = function () {
+  if (checkEmty(getElement("#tknv").value, "#tbTKNV")) {
+	  if (checkNumber(getElement("#tknv").value, "#tbTKNV")) {
+		  checkLength(getElement("#tknv").value.trim(), "#tbTKNV", 4, 6);
+    }
+  }
+};
+getElement("#name").onblur = function () {
+  if (checkEmty(getElement("#name").value.trim(), "#tbTen")) {
 
-//     checkLetter("#name", "#tbTen");
-//   }
-// };
-// getElement("#email").onblur = function () {
-// 	if (checkEmty(email, "#tbEmail")) {
-// 		 checkEmail(email, "#tbEmail");
-// 	  }
+    checkLetter(getElement("#name").value, "#tbTen");
+  }
+};
+getElement("#email").onblur = function () {
+	if (checkEmty(getElement("#email").value, "#tbEmail")) {
+		 checkEmail(getElement("#email").value, "#tbEmail");
+	  }
 	  
-// };
-// getElement("#password").onblur = function () {
-// 	if (checkEmty(password, "#tbMatKhau")) {
-// 		if (checkLength(password, "#tbMatKhau", 6, 10)) {
-// 		  checkPassword(password, "#tbMatKhau");
-// 		}
-// 	  }
-// };
-// getElement("#datepicker").onblur = function () {
-// 	if (checkEmty(datepicker, "#tbNgay")) {
-// 		checkDate(datepicker, "#tbNgay");
-// 	  }
-// };
-// getElement("#luongCB").onblur = function () {
-// 	if (checkEmty(luongCB, "#tbLuongCB")) {
-// 		checkValue(luongCB, "#tbLuongCB", 1000000, 20000000);
-// 	  }
-// };
-// getElement("#chucvu").onblur = function () {
-//   checkEmty("#chucvu", "#tbChucVu");
-// };
-// getElement("#gioLam").onblur = function () {
-// 	if (checkEmty(gioLam, "#tbGiolam")) {
-// 		checkValue(gioLam, "#tbGiolam", 80, 200);
-// 	  }
-// };
+};
+getElement("#password").onblur = function () {
+	if (checkEmty(getElement("#password").value, "#tbMatKhau")) {
+		if (checkLength(getElement("#password").value, "#tbMatKhau", 6, 10)) {
+		  checkPassword(getElement("#password").value, "#tbMatKhau");
+		}
+	  }
+};
+getElement("#datepicker").onblur = function () {
+	if (checkEmty(getElement("#datepicker").value, "#tbNgay")) {
+		checkDate(getElement("#datepicker").value, "#tbNgay");
+	  }
+};
+getElement("#luongCB").onblur = function () {
+	if (checkEmty(getElement("#luongCB").value, "#tbLuongCB")) {
+		checkValue(getElement("#luongCB").value, "#tbLuongCB", 1000000, 20000000);
+	  }
+};
+getElement("#chucvu").onblur = function () {
+  checkEmty(getElement("#chucvu").value, "#tbChucVu");
+};
+getElement("#gioLam").onblur = function () {
+	if (checkEmty(getElement("#gioLam").value, "#tbGiolam")) {
+		checkValue(getElement("#gioLam").value, "#tbGiolam", 80, 200);
+	  }
+};
