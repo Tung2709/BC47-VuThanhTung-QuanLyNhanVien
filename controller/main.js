@@ -16,47 +16,50 @@ getElement("#btnThemNV").onclick= function(){
 	var luongCB=+getElement("#luongCB").value
 	var chucvu=getElement("#chucvu").value
 	var gioLam=+getElement("#gioLam").value
-	 console.log(typeof luongCB)
-	 console.log(luongCB)
 	// tạo mảng nhân viên từ lớp đối tượng Nhân Viên
 	var nhanvien= new NhanVien(tknv,name,email,password,datepicker,luongCB,chucvu,gioLam)
 	
+	var valid = checkEmty(tknv,'#tbTKNV')&checkEmty(name,'#tbTen')&checkEmty(email,'#tbEmail')&checkEmty(datepicker,'#tbNgay')&checkEmty(chucvu,'#tbChucVu')&checkEmty(password,'#tbMatKhau')&checkEmty(luongCB,'#tbLuongCB')&checkEmty(gioLam,'#tbGiolam')
 
-		// Kiểm có thông tin bị bỏ trống hay không
-		validEmty(tknv,'#tbTKNV')
-		validEmty(name,'#tbTen')
-		validEmty(email,'#tbEmail')
-		validEmty(password,'#tbMatKhau')
-		validEmty(datepicker,'#tbNgay')
-		validEmty(chucvu,'#tbChucVu')
-		validEmty(luongCB,'#tbLuongCB')
-		validEmty(gioLam,'#tbGiolam')
+		if(checkEmty(tknv,'#tbTKNV')){
+			valid &= checkNumber(tknv,'#tbTKNV')
+			if(checkNumber(tknv,'#tbTKNV')){
+				valid &= checkLength(tknv.trim(),'#tbTKNV',4,6)
+			}
+		}
+		if(checkEmty(name.trim,'#tbTen')){
+			valid &= checkLetter(name,'#tbTen')
+		}
 
-	// Kiểm tra thông tin nhập vào là dạng số
-	validNumber(tknv,'#tbTKNV')
+		if(checkEmty(email,'#tbEmail')){
+			valid &=checkEmail(email,'#tbEmail')	
+		}
+		
+		if(checkEmty(password,'#tbMatKhau')){
+			valid &= checkLength(password.trim(),'#tbMatKhau',6,10)
+			if (checkLength(password.trim(),'#tbMatKhau',6,10)){
+				valid &= checkPassword(password,'#tbMatKhau')
+			}
+		}
+		
+		if(checkEmty(datepicker,'#tbNgay')){
+			valid &= checkDate(datepicker,'#tbNgay')
+		}
+		
+		if(checkEmty(luongCB,'#tbLuongCB')){
+			valid &= checkValue(luongCB,'#tbLuongCB',1000000,20000000)
+		}
+		
+		if(checkEmty(gioLam,'#tbGiolam')){
+			valid &= checkValue(gioLam,'#tbGiolam',80,200)
 
+		}
+		
+	
 
-	// Kiểm tra độ dài của thông tin 
-	// checkLength(tknv,'#tbTKNV',4,6)
-	checkLength(password,'#tbMatKhau',6,10)
-	checkLength(tknv,'#tbTKNV',4,8)
-
-	// Kiểm tra thông tin có phải chữ
-	checkLetter(name,'#tbTen')
-
-	// Kiểm tra định dạng email
-	checkEmail(email,'#tbEmail')
-
-	//  Kiểm tra định dạng mật khẩu
-	checkPassword(password,'#tbMatKhau')
-
-	//Kiểm tra định dạng ngày
-	checkDate(datepicker,'#tbNgay')
-
-	//Kiểm tra lương cb và giờ làm
-	checkValue(luongCB,'#tbLuongCB',1000000,20000000)
-	checkValue(gioLam,'#tbGiolam',80,200)
-
+		if (!valid){
+			return;
+		}
 
 
 	// Thêm thông tin nhân viên mới nhập vào mảng nhân viên
@@ -92,6 +95,7 @@ getElement("#btnDong").onclick= function(){
 		getElement('#tbLuongCB').style.display="none"
 		getElement('#tbGiolam').style.display="none"
 
+		getElement("#formNV").reset()
 }
 
 // Lưu object nhân viên vào bộ nhớ local
@@ -208,28 +212,12 @@ getElement("#searchName").addEventListener("keyup", function(){
 	renderNV(dsnv.arrayNV)
 })
 
-// validation cho các thông tin nhân viên điền vào 
-function validTKNV(vtknv){
-	regexNum= new RegExp("^[0-9]+$");
-	regexRange= new RegExp("[4-6]")
-	if(!vtnkv){
-		getElement("#tbTKNV").innerHTML="Không được bỏ trống"
-	}
-}
+// kiểm cho các thông tin nhân viên điền vào 
 
-function validEmty(value,alert){
-	
-	if(value===0){
+function checkEmty(value,alert){
+	if(!value){
 		getElement(alert).style.display="block"
 		getElement(alert).innerHTML="Không được bỏ trống"
-		console.log(value)
-		return false
-	}
-
-	if(!value.trim()){
-		getElement(alert).style.display="block"
-		getElement(alert).innerHTML="Không được bỏ trống"
-		console.log(value)
 		return false
 	}  
 
@@ -244,7 +232,7 @@ function validEmty(value,alert){
 	return true
 }
 
-function validNumber(value,alert){
+function checkNumber(value,alert){
 	var regexNumber =/^\d+$/;
 	var number = regexNumber.test(value);
 	if(!number){
@@ -335,35 +323,35 @@ function checkValue(value, alert , minValue, maxValue){
 
 
     // getElement("#tknv").onblur=function(){
-	// 	validEmty("#tknv",'#tbTKNV')
-	// 	validNumber("#tknv",'#tbTKNV')
+	// 	checkEmty("#tknv",'#tbTKNV')
+	// 	checkNumber("#tknv",'#tbTKNV')
 	// 	checkLength("#tknv",'#tbTKNV',4,6)
 	// }
 	// getElement("#name").onblur=function(){
-	// 	validEmty("#name",'#tbTen')
+	// 	checkEmty("#name",'#tbTen')
 	// 	checkLetter("#name",'#tbTen')
 	// }
 	// getElement("#email").onblur=function(){
 	// 	checkEmail("#email",'#tbEmail')
-	// 	validEmty("#email",'#tbEmail') 
+	// 	checkEmty("#email",'#tbEmail') 
 	// }
 	// getElement("#password").onblur=function(){
 	// 	checkLength("#password",'#tbMatKhau',6,10)
 	// 	checkPassword("#password",'#tbMatKhau')
-	// 	validEmty("#password",'#tbMatKhau') 
+	// 	checkEmty("#password",'#tbMatKhau') 
 	// }
 	// getElement("#datepicker").onblur=function(){
 	// 	checkDate("#datepicker",'#tbNgay')
-	// 	validEmty("#datepicker",'#tbNgay')
+	// 	checkEmty("#datepicker",'#tbNgay')
 	// }
 	// getElement("#luongCB").onblur=function(){
 	// 	checkValue("#luongCB",'#tbLuongCB',1000000,20000000)
-	// 	validEmty("#luongCB",'#tbLuongCB')
+	// 	checkEmty("#luongCB",'#tbLuongCB')
 	// }
 	// getElement("#chucvu").onblur=function(){
-	// 	validEmty("#chucvu",'#tbChucVu')
+	// 	checkEmty("#chucvu",'#tbChucVu')
 	// }
 	// getElement("#gioLam").onblur=function(){
 	// 	checkValue("#gioLam",'#tbGiolam',80,200)
-	// 	validEmty("#gioLam",'#tbGiolam')
+	// 	checkEmty("#gioLam",'#tbGiolam')
 	// }
