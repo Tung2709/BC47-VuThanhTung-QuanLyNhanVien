@@ -22,13 +22,24 @@ getElement("#btnThemNV").onclick= function(){
 	var nhanvien= new NhanVien(tknv,name,email,password,datepicker,luongCB,chucvu,gioLam)
 	
 
+		// Kiểm có thông tin bị bỏ trống hay không
+		validEmty(tknv,'#tbTKNV')
+		validEmty(name,'#tbTen')
+		validEmty(email,'#tbEmail')
+		validEmty(password,'#tbMatKhau')
+		validEmty(datepicker,'#tbNgay')
+		validEmty(chucvu,'#tbChucVu')
+		validEmty(luongCB,'#tbLuongCB')
+		validEmty(gioLam,'#tbGiolam')
+
 	// Kiểm tra thông tin nhập vào là dạng số
 	validNumber(tknv,'#tbTKNV')
 
 
 	// Kiểm tra độ dài của thông tin 
-	checkLength(tknv,'#tbTKNV',4,6)
+	// checkLength(tknv,'#tbTKNV',4,6)
 	checkLength(password,'#tbMatKhau',6,10)
+	checkLength(tknv,'#tbTKNV',4,8)
 
 	// Kiểm tra thông tin có phải chữ
 	checkLetter(name,'#tbTen')
@@ -46,18 +57,6 @@ getElement("#btnThemNV").onclick= function(){
 	checkValue(luongCB,'#tbLuongCB',1000000,20000000)
 	checkValue(gioLam,'#tbGiolam',80,200)
 
-	// Kiểm có thông tin bị bỏ trống hay không
-	validEmty(tknv,'#tbTKNV')
-	validEmty(name,'#tbTen')
-	validEmty(email,'#tbEmail')
-	validEmty(password,'#tbMatKhau')
-	validEmty(datepicker,'#tbNgay')
-	validEmty(chucvu,'#tbChucVu')
-	validEmty(luongCB,'#tbLuongCB')
-
-	getElement("#tbLuongCB").style.display="block"
-	getElement("#tbLuongCB").innerHTML= luongCB
-	validEmty(gioLam,'#tbGiolam')
 
 
 	// Thêm thông tin nhân viên mới nhập vào mảng nhân viên
@@ -69,6 +68,30 @@ getElement("#btnThemNV").onclick= function(){
 
 	setLocalNhanVien(dsnv.arrayNV)
 	
+}
+
+// xóa thông báo khí nhấn đóng
+getElement("#btnDong").onclick= function(){
+
+	
+	getElement('#tbTKNV').innerHTML=" "
+	getElement('#tbTen').innerHTML=" "
+	getElement('#tbEmail').innerHTML=" "
+	getElement('#tbMatKhau').innerHTML=" "
+	getElement('#tbNgay').innerHTML=" "
+	getElement('#tbChucVu').innerHTML=" "
+	getElement('#tbLuongCB').innerHTML=" "
+	getElement('#tbGiolam').innerHTML=" "
+
+	    getElement('#tbTKNV').style.display="none"
+		getElement('#tbTen').style.display="none"
+		getElement('#tbEmail').style.display="none"
+		getElement('#tbMatKhau').style.display="none"
+		getElement('#tbNgay').style.display="none"
+		getElement('#tbChucVu').style.display="none"
+		getElement('#tbLuongCB').style.display="none"
+		getElement('#tbGiolam').style.display="none"
+
 }
 
 // Lưu object nhân viên vào bộ nhớ local
@@ -195,20 +218,30 @@ function validTKNV(vtknv){
 }
 
 function validEmty(value,alert){
-	if(!value.trim() || value==0){
+	
+	if(value===0){
 		getElement(alert).style.display="block"
 		getElement(alert).innerHTML="Không được bỏ trống"
 		console.log(value)
-		return
-	} 
+		return false
+	}
+
+	if(!value.trim()){
+		getElement(alert).style.display="block"
+		getElement(alert).innerHTML="Không được bỏ trống"
+		console.log(value)
+		return false
+	}  
+
 	if(value==="Chọn chức vụ"){
 		getElement(alert).style.display="block"
 		getElement(alert).innerHTML="Hãy chọn chức vụ"
-		return
+		return false
 	}
 
 	getElement(alert).style.display="none"
 	getElement(alert).innerHTML=" "
+	return true
 }
 
 function validNumber(value,alert){
@@ -217,10 +250,11 @@ function validNumber(value,alert){
 	if(!number){
 		getElement(alert).style.display="block"
 		getElement(alert).innerHTML="Chỉ được điền số"
-		return
+		return false
 	}
 	getElement(alert).style.display="none"
 	getElement(alert).innerHTML=" "
+	return true
 }
 
 function checkLength(value, alert , minLength, maxLength){
