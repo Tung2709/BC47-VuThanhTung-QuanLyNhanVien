@@ -16,18 +16,11 @@ getElement("#btnThemNV").onclick= function(){
 	var luongCB=+getElement("#luongCB").value
 	var chucvu=getElement("#chucvu").value
 	var gioLam=+getElement("#gioLam").value
-
+	 console.log(typeof luongCB)
+	 console.log(luongCB)
 	// tạo mảng nhân viên từ lớp đối tượng Nhân Viên
 	var nhanvien= new NhanVien(tknv,name,email,password,datepicker,luongCB,chucvu,gioLam)
 	
-	// Kiểm có thông tin bị bỏ trống hay không
-	validEmty(tknv,'#tbTKNV')
-	validEmty(name,'#tbTen')
-	validEmty(email,'#tbEmail')
-	validEmty(datepicker,'#tbNgay')
-	validEmty(luongCB,'#tbLuongCB')
-	validEmty(gioLam,'#tbGiolam')
-
 
 	// Kiểm tra thông tin nhập vào là dạng số
 	validNumber(tknv,'#tbTKNV')
@@ -52,6 +45,20 @@ getElement("#btnThemNV").onclick= function(){
 	//Kiểm tra lương cb và giờ làm
 	checkValue(luongCB,'#tbLuongCB',1000000,20000000)
 	checkValue(gioLam,'#tbGiolam',80,200)
+
+	// Kiểm có thông tin bị bỏ trống hay không
+	validEmty(tknv,'#tbTKNV')
+	validEmty(name,'#tbTen')
+	validEmty(email,'#tbEmail')
+	validEmty(password,'#tbMatKhau')
+	validEmty(datepicker,'#tbNgay')
+	validEmty(chucvu,'#tbChucVu')
+	validEmty(luongCB,'#tbLuongCB')
+
+	getElement("#tbLuongCB").style.display="block"
+	getElement("#tbLuongCB").innerHTML= luongCB
+	validEmty(gioLam,'#tbGiolam')
+
 
 	// Thêm thông tin nhân viên mới nhập vào mảng nhân viên
 	dsnv.themNV(nhanvien)
@@ -188,9 +195,10 @@ function validTKNV(vtknv){
 }
 
 function validEmty(value,alert){
-	if(!value){
+	if(!value.trim() || value==0){
 		getElement(alert).style.display="block"
 		getElement(alert).innerHTML="Không được bỏ trống"
+		console.log(value)
 		return
 	} 
 	if(value==="Chọn chức vụ"){
@@ -289,3 +297,39 @@ function checkValue(value, alert , minValue, maxValue){
 	document.querySelector(alert).innerHTML = '' ;
 	return true;
 }
+
+
+
+    // getElement("#tknv").onblur=function(){
+	// 	validEmty("#tknv",'#tbTKNV')
+	// 	validNumber("#tknv",'#tbTKNV')
+	// 	checkLength("#tknv",'#tbTKNV',4,6)
+	// }
+	// getElement("#name").onblur=function(){
+	// 	validEmty("#name",'#tbTen')
+	// 	checkLetter("#name",'#tbTen')
+	// }
+	// getElement("#email").onblur=function(){
+	// 	checkEmail("#email",'#tbEmail')
+	// 	validEmty("#email",'#tbEmail') 
+	// }
+	// getElement("#password").onblur=function(){
+	// 	checkLength("#password",'#tbMatKhau',6,10)
+	// 	checkPassword("#password",'#tbMatKhau')
+	// 	validEmty("#password",'#tbMatKhau') 
+	// }
+	// getElement("#datepicker").onblur=function(){
+	// 	checkDate("#datepicker",'#tbNgay')
+	// 	validEmty("#datepicker",'#tbNgay')
+	// }
+	// getElement("#luongCB").onblur=function(){
+	// 	checkValue("#luongCB",'#tbLuongCB',1000000,20000000)
+	// 	validEmty("#luongCB",'#tbLuongCB')
+	// }
+	// getElement("#chucvu").onblur=function(){
+	// 	validEmty("#chucvu",'#tbChucVu')
+	// }
+	// getElement("#gioLam").onblur=function(){
+	// 	checkValue("#gioLam",'#tbGiolam',80,200)
+	// 	validEmty("#gioLam",'#tbGiolam')
+	// }
