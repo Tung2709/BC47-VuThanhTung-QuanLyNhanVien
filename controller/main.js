@@ -20,6 +20,39 @@ getElement("#btnThemNV").onclick= function(){
 	// tạo mảng nhân viên từ lớp đối tượng Nhân Viên
 	var nhanvien= new NhanVien(tknv,name,email,password,datepicker,luongCB,chucvu,gioLam)
 	
+	// Kiểm có thông tin bị bỏ trống hay không
+	validEmty(tknv,'#tbTKNV')
+	validEmty(name,'#tbTen')
+	validEmty(email,'#tbEmail')
+	validEmty(datepicker,'#tbNgay')
+	validEmty(luongCB,'#tbLuongCB')
+	validEmty(gioLam,'#tbGiolam')
+
+
+	// Kiểm tra thông tin nhập vào là dạng số
+	validNumber(tknv,'#tbTKNV')
+
+
+	// Kiểm tra độ dài của thông tin 
+	checkLength(tknv,'#tbTKNV',4,6)
+	checkLength(password,'#tbMatKhau',6,10)
+
+	// Kiểm tra thông tin có phải chữ
+	checkLetter(name,'#tbTen')
+
+	// Kiểm tra định dạng email
+	checkEmail(email,'#tbEmail')
+
+	//  Kiểm tra định dạng mật khẩu
+	checkPassword(password,'#tbMatKhau')
+
+	//Kiểm tra định dạng ngày
+	checkDate(datepicker,'#tbNgay')
+
+	//Kiểm tra lương cb và giờ làm
+	checkValue(luongCB,'#tbLuongCB',1000000,20000000)
+	checkValue(gioLam,'#tbGiolam',80,200)
+
 	// Thêm thông tin nhân viên mới nhập vào mảng nhân viên
 	dsnv.themNV(nhanvien)
 
@@ -155,10 +188,104 @@ function validTKNV(vtknv){
 }
 
 function validEmty(value,alert){
-	if(!value)
-	getElement([alert]).innerHTML="Không được bỏ trống"
+	if(!value){
+		getElement(alert).style.display="block"
+		getElement(alert).innerHTML="Không được bỏ trống"
+		return
+	} 
+	if(value==="Chọn chức vụ"){
+		getElement(alert).style.display="block"
+		getElement(alert).innerHTML="Hãy chọn chức vụ"
+		return
+	}
+
+	getElement(alert).style.display="none"
+	getElement(alert).innerHTML=" "
 }
-var i = 10; 	
-var regex =/^\d+$/;
-var a=regex.test(i)
-console.log(a)
+
+function validNumber(value,alert){
+	var regexNumber =/^\d+$/;
+	var number = regexNumber.test(value);
+	if(!number){
+		getElement(alert).style.display="block"
+		getElement(alert).innerHTML="Chỉ được điền số"
+		return
+	}
+	getElement(alert).style.display="none"
+	getElement(alert).innerHTML=" "
+}
+
+function checkLength(value, alert , minLength, maxLength){
+	if (value.length < minLength || value.length > maxLength){
+		document.querySelector(alert).style.display="block";
+		document.querySelector(alert).innerHTML ='Phải có độ dài từ ' + minLength + ' đến ' + maxLength + ' ký tự';
+		return false ;
+	}
+	document.querySelector(alert).style.display="none";
+	document.querySelector(alert).innerHTML = '' ;
+	return true;
+}
+
+// Kiểm thông tin có phải là chữ
+function checkLetter(value, alert){
+	var regex = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
+	if (regex.test(value)){
+		document.querySelector(alert).style.display="none";
+		document.querySelector(alert).innerHTML = '' ;
+		return true ;
+	}
+	document.querySelector(alert).style.display="block";
+	document.querySelector(alert).innerHTML= 'Phải là chuỗi ký tự'
+	return false;
+}
+
+//Kiểm tra định dạng email
+function checkEmail(value, alert){
+	var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	if (regex.test(value)){
+		document.querySelector(alert).style.display="none";
+		document.querySelector(alert).innerHTML = '' ;
+		return true ;
+	}
+	document.querySelector(alert).style.display="block";
+	document.querySelector(alert).innerHTML ='Phải đúng theo định dạng. Ví dụ: abc@gmail.com'
+	return false;
+}
+
+// Kiểm định dạng mật khẩu
+function checkPassword(value, alert){
+	var regex =/(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])/;
+	if (regex.test(value)){
+		document.querySelector(alert).style.display="none";
+		document.querySelector(alert).innerHTML = '' ;
+		return true ;
+	}
+	document.querySelector(alert).style.display="block";
+	document.querySelector(alert).innerHTML = 'Phải chứa ít nhất 1 ký tự số, 1 ký tự in hoa, 1 ký tự đặc biệt'
+	return false;
+}
+
+// Kiểm tra định dạng ngày làm
+function checkDate(value, alert){
+	var regex = /(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/](0[13578]|1[02]))|((29|30)[\/](0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)/;
+	if (regex.test(value)){
+		document.querySelector(alert).style.display="none";
+		document.querySelector(alert).innerHTML = '' ;
+		return true ;
+	}
+	document.querySelector(alert).style.display="block";
+	document.querySelector(alert).innerHTML = 'Phải đúng định dạng dd/mm/yyyy'
+	return false;
+}
+
+//Kiểm tra lương và giờ làm
+function checkValue(value, alert , minValue, maxValue){
+	if (value < minValue || value > maxValue){
+		document.querySelector(alert).style.display="block";
+		document.querySelector(alert).innerHTML = 'Phải từ ' + minValue + ' đến ' + maxValue;
+		return false ;
+	}
+	document.querySelector(alert).style.display="none";
+	document.querySelector(alert).innerHTML = '' ;
+	return true;
+}
